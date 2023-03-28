@@ -1,4 +1,4 @@
 from mdl import Imub
 
 iim =input("")
-input(str(Imub(iim).bukvub_imy) + " " + str(Imub(iim).ppk))
+input(str(Imub(iim, "PL").udarath_imy))
