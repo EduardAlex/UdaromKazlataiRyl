@@ -1,10 +1,6 @@
-class Imub:
-	def __init__(self, im, num="SG"):
-		self.im = im
-		self.nomin = False # Islo rezultathi is nominatiugas bezen is y yer inputis razgusva
-		if num != "SG":
-			self.nomin = True
-		self.nomber = num # SG (edga), PL (aunogen) il PA (numeruna)
+class Udar:
+	def __init__(self, faqer):
+		self.faqer = faqer
 		self.bukvub_korniy = []
 		self.vokalub = [i for i in "aeiouýäüąëï"]
 		self.pk = {"t" : "ť", "d" : "ď", "s" : "ś", "z" : "ź", "x" : "ħ", "xh" : "h",
@@ -12,9 +8,7 @@ class Imub:
 		self.apk = {"t" : "tt", "d" : "dd", "s" : "ss", "z" : "zz", "l" : "ll", "c" : "cc"}
 		self.ppk = [self.pk[i] for i in self.pk]
 		self.papk = [self.apk[i] for i in self.apk]
-		self.udarath_imy = {}
 		self.uzan_bukvab_korniy()
-		self.udar_ima()
 
 	def uzan_bukvab_korniy(self):
 		azuten = False
@@ -42,16 +36,24 @@ class Imub:
 					self.bukvub_korniy.append(j)
 			else:
 				self.bukvub_korniy.append(j)
-		# Stsi izmenathiub faqriskengai uncepusez
-		if self.bukvub_korniy[-2] == "ë":
-			del self.bukvub_korniy[-2]
-		if self.bukvub_korniy[-1] == "ŭ":
-			self.bukvub_korniy[-1] = "v"
-		if self.bukvub_korniy[-1] == "u":
-			del self.bukvub_korniy[-1]
+
+	def abgepraugathiub(self, ltd):
+		# Stsi izmenathiub faqriskengai slucusez
+		if ltd[-2] == "ë":
+			del ltd[-2]
+			if ltd[-2] == "v":
+				ltd[-2] = "ŭ"
+		if ltd[-1] == "ŭ":
+			ltd[-1] = "v"
+		if ltd[-1] == "u":
+			del ltd[-1]
+			if ltd[-1] == "v":
+				ltd[-1] = "ŭ"
+		return ltd
+
 		# Paukalga nomber stsi pridus
-		if self.nomber == "PA":
-			self.bukvub_korniy += ["ä", "k"]
+		# if self.nomber == "PA":
+		# 	self.bukvub_korniy += ["ä", "k"]
 
 	def vospis_slova(self, bk):
 		vospisuna = ""
@@ -65,6 +67,19 @@ class Imub:
 						continue
 			vospisuna += j
 		return vospisuna
+
+class Imub(Udar):
+	def __init__(self, im, num="SG"):
+		self.im = im
+		self.nomin = False # Islo rezultathi is nominatiugas bezen is y yer inputis razgusva
+		if num != "SG":
+			self.nomin = True
+		self.nomber = num # SG (edga), PL (aunogen) il PA (numeruna)
+		super().__init__(im)
+		self.bukvub_korniy = self.abgepraugathiub(self.bukvub_korniy)
+		if num == "PA":
+			self.bukvub_korniy += ["ä", "k"]
+		self.udar_ima()
 
 	def udar_ima(self):
 		self.udarath_imy = {"Nominatiŭgą" : self.nominatiuga(), "Akuzatiŭgą" : self.akuzatiuga(), "Genitiŭgą" : self.genitiuga(), "Datiŭgą" : self.datiuga(),
@@ -156,3 +171,39 @@ class Imub:
 # a = input("")
 # b = Imub(a)
 # print(b.bukvub_korniy, b.udarath_imy)
+
+
+class Verbub:
+	def __init__(self, verb, mod="IND", vrm = "PRES", zan = "AFF", vop = "KEN"):
+		self.verb = verb
+		self.mod = mod
+		self.vrm = vrm # Vreml akciyy
+		self.zan = zan # Zanath lokutory e akciy, AFF (afirmatiuga) il NEG (negatiuga)
+		self.vop = vop # Al prepozic voprosgusva ilei (KEN/EI)
+		self.bukvub_korniy = []
+		self.koren_ind = [] # Koren indikatiugai mody
+		self.koren_imp = [] # Koren imperatiugai mody
+		self.koren_imppl = [] # Koren pluralathiy eidelunai vremliy
+		super().__init__(verb)
+
+
+	def naid_kornia_verby(self):
+		hbp = list(self.bukvub_korniy)
+		if self.verb.startswith("ti"):
+			del hdp[0:2]
+		elif self.verb.startswith("d"):
+			del hdp[0]
+		# IMPERATIUGA
+		self.koren_imp = list(hdp)
+		# INDIKATIUGA
+		if hdp[-1] == "t":
+			if False: # !!!!!! STSI ABIT LISTE EIREGULATAU VERBYB !!!!!!
+				pass
+			elif hdp[-2] == "a":
+				del hdp[-2:]
+			else:
+				del hdp[-1]
+		hdp = abgepraugathiub(hdp)
+		self.koren_ind = list(hdp)
+		# EIDELUNA VREML
+		# !!!!!!

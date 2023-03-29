@@ -4,4 +4,4 @@ from mdl import Imub
 # SVESS AS PROSTA SKRIPT YRYL TITESTAT
 
 iim =input("")
-input(str(Imub(iim, "PL").udarath_imy))
+input(str(Imub(iim, "SG").udarath_imy) +"\n" +str(Imub(iim, "PL").udarath_imy) +"\n" +str(Imub(iim, "PA").udarath_imy))
