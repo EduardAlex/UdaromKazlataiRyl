@@ -8,41 +8,46 @@ class Udar:
 		self.apk = {"t" : "tt", "d" : "dd", "s" : "ss", "z" : "zz", "l" : "ll", "c" : "cc"}
 		self.ppk = [self.pk[i] for i in self.pk]
 		self.papk = [self.apk[i] for i in self.apk]
-		self.uzan_bukvab_korniy()
+		self.bukvub_korniy = self.uzan_bukvab_korniy(self.faqer)
 
-	def uzan_bukvab_korniy(self):
+	def uzan_bukvab_korniy(self, a):
+		res = []
 		azuten = False
-		for i,j in enumerate(self.im):
+		for i,j in enumerate(a):
 			if azuten:
 				azuten = False
 				continue
-			if j == "x" and i != len(self.im)-1:
-				if self.im[i+1] == "h":
-					self.bukvub_korniy.append("xh")
+			if j == "x" and i != len(a)-1:
+				if a[i+1] == "h":
+					res.append("xh")
 					azuten = True
-			elif j == "i" and i != len(self.im)-1:
-				if self.im[i+1] in self.vokalub:
-					# print(self.im[i+1])
+			elif j == "i" and i != len(a)-1:
+				if a[i+1] in self.vokalub:
+					# print(a[i+1])
 					continue
 				else:
-					self.bukvub_korniy.append(j)
+					res.append(j)
 			# elif j == "ï":
-			# 	self.bukvub_korniy.append("i")
-			elif j in "tdszlc" and i != len(self.im)-1:
-				if self.im[i+1] == j:
-					self.bukvub_korniy.append(2*j)
+			# 	res.append("i")
+			elif j in "tdszlc" and i != len(a)-1:
+				if a[i+1] == j:
+					res.append(2*j)
 					azuten = True
 				else:
-					self.bukvub_korniy.append(j)
+					res.append(j)
 			else:
-				self.bukvub_korniy.append(j)
+				res.append(j)
+		return res
 
 	def abgepraugathiub(self, ltd):
 		# Stsi izmenathiub faqriskengai slucusez
-		if ltd[-2] == "ë":
-			del ltd[-2]
-			if ltd[-2] == "v":
-				ltd[-2] = "ŭ"
+		try:
+			if ltd[-2] == "ë":
+				del ltd[-2]
+				if ltd[-2] == "v":
+					ltd[-2] = "ŭ"
+		except:
+			pass # ayaye meci mai prost
 		if ltd[-1] == "ŭ":
 			ltd[-1] = "v"
 		if ltd[-1] == "u":
@@ -173,22 +178,28 @@ class Imub(Udar):
 # print(b.bukvub_korniy, b.udarath_imy)
 
 
-class Verbub:
+class Verbub(Udar):
 	def __init__(self, verb, mod="IND", vrm = "PRES", zan = "AFF", vop = "KEN"):
 		self.verb = verb
 		self.mod = mod
 		self.vrm = vrm # Vreml akciyy
 		self.zan = zan # Zanath lokutory e akciy, AFF (afirmatiuga) il NEG (negatiuga)
 		self.vop = vop # Al prepozic voprosgusva ilei (KEN/EI)
-		self.bukvub_korniy = []
 		self.koren_ind = [] # Koren indikatiugai mody
 		self.koren_imp = [] # Koren imperatiugai mody
 		self.koren_imppl = [] # Koren pluralathiy eidelunai vremliy
+		self.ip_izmenathiub = {}
+		self.ip_eidelunai = {}
+		with open("vi", "r") as f: # List yb eidelunau infinitiugau
+			self.vi = f.read().split(" ")
+		self.naid_eidel()
 		super().__init__(verb)
+		self.naid_kornia_verby()
+		print(str(self.koren_imp) + "\n" + str(self.koren_ind) + "\n" + str(self.koren_imppl))
 
 
 	def naid_kornia_verby(self):
-		hbp = list(self.bukvub_korniy)
+		hdp = list(self.bukvub_korniy)
 		if self.verb.startswith("ti"):
 			del hdp[0:2]
 		elif self.verb.startswith("d"):
@@ -203,7 +214,27 @@ class Verbub:
 				del hdp[-2:]
 			else:
 				del hdp[-1]
-		hdp = abgepraugathiub(hdp)
+		hdp = self.abgepraugathiub(hdp)
 		self.koren_ind = list(hdp)
 		# EIDELUNA VREML
-		# !!!!!!
+		for i in self.ip_eidelunai:
+			if self.vospis_slova(self.koren_imp) == i:
+				self.koren_imppl = self.uzan_bukvab_korniy(self.ip_eidelunai[i])
+				print(self.ip_eidelunai[i])
+				break
+		if self.koren_imppl == []:
+			for i in self.ip_izmenathiub:
+				if self.verb.endswith(i):
+					self.koren_imppl = self.koren_imp[:-len(self.uzan_bukvab_korniy(i))] + self.uzan_bukvab_korniy(self.ip_izmenathiub[i])
+					break
+
+	def naid_eidel(self):
+		izm = []
+		eid = []
+		with open("kimpp", "r", encoding="utf8") as f:
+			i1, e1 = f.read()[:-1].split("&")
+			izm = i1.split(",")
+			eid = e1.split(",")
+		self.ip_izmenathiub = {i.split("-")[0] : i.split("-")[1] for i in izm}
+		self.ip_eidelunai = {i.split("-")[0] : i.split("-")[1] for i in eid}
+		print(self.ip_izmenathiub, self.ip_eidelunai)
