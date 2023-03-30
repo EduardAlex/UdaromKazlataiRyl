@@ -1,6 +1,7 @@
 class Udar:
 	def __init__(self, faqer):
 		self.faqer = faqer
+		self.proimub = {"1SG" : "m", "2SG" : "t", "3SG" : "s", "1PL" : "n", "2PL" : "d", "3PL" : "z"}
 		self.bukvub_korniy = []
 		self.vokalub = [i for i in "aeiouýäüąëï"]
 		self.pk = {"t" : "ť", "d" : "ď", "s" : "ś", "z" : "ź", "x" : "ħ", "xh" : "h",
@@ -74,14 +75,17 @@ class Udar:
 		return vospisuna
 
 class Imub(Udar):
-	def __init__(self, im, num="SG"):
+	def __init__(self, im, num="SG", pos=None):
 		self.im = im
 		self.nomin = False # Islo rezultathi is nominatiugas bezen is y yer inputis razgusva
-		if num != "SG":
+		if num != "SG" or pos != None:
 			self.nomin = True
 		self.nomber = num # SG (edga), PL (aunogen) il PA (numeruna)
+		self.pos = pos # 1SG, 2SG, 3SG, 1PL, 2PL, 3PL, GEN, EXC
 		super().__init__(im)
 		self.bukvub_korniy = self.abgepraugathiub(self.bukvub_korniy)
+		if self.pos != None:
+			self.bukvub_korniy += ["ý", self.proimub[pos]]
 		if num == "PA":
 			self.bukvub_korniy += ["ä", "k"]
 		self.udar_ima()
