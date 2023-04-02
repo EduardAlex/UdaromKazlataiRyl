@@ -22,6 +22,8 @@ class Udar:
 				if a[i+1] == "h":
 					res.append("xh")
 					azuten = True
+				else:
+					res.append(j)
 			elif j == "i" and i != len(a)-1:
 				if a[i+1] in self.vokalub:
 					# print(a[i+1])
@@ -72,6 +74,13 @@ class Udar:
 						elif bk[i+1] != "ï":
 							vospisuna += j + "i"
 							continue
+				except:
+					pass
+			elif j == "ŭ":
+				try:
+					if bk[i+1] in self.vokalub:
+						vospisuna += "v"
+						continue
 				except:
 					pass
 			vospisuna += j
