@@ -7,4 +7,4 @@ from vrb import Udvb
 iim =input("")
 p = input("")
 a = input(str(Imub(iim, "SG").udarath_imy) +"\n" +str(Imub(iim, "PL").udarath_imy) +"\n" +str(Imub(iim, "PA").udarath_imy))
-print(Udvb(p))
+print(Udvb(p, zan="NEG", vop = True))
