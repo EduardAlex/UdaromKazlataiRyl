@@ -1,5 +1,5 @@
 from mdl import Imub
-from mdl import Verbub
+from vrb import Udvb
 
 # THIS IS JUST A SCRIPT USED FOR TESTING
 # SVESS AS PROSTA SKRIPT YRYL TITESTAT
@@ -7,4 +7,4 @@ from mdl import Verbub
 iim =input("")
 p = input("")
 a = input(str(Imub(iim, "SG").udarath_imy) +"\n" +str(Imub(iim, "PL").udarath_imy) +"\n" +str(Imub(iim, "PA").udarath_imy))
-Verbub(a)
+print(Udvb(p))

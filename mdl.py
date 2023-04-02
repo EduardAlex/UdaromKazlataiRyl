@@ -65,12 +65,15 @@ class Udar:
 		vospisuna = ""
 		for i,j in enumerate(bk):
 			if j in self.ppk or j in self.papk:
-				if bk[i+1] in self.vokalub:
-					if bk[i+1] == "i":
-						bk[i+1] = "ï"
-					elif bk[i+1] != "ï":
-						vospisuna += j + "i"
-						continue
+				try:
+					if bk[i+1] in self.vokalub:
+						if bk[i+1] == "i":
+							bk[i+1] = "ï"
+						elif bk[i+1] != "ï":
+							vospisuna += j + "i"
+							continue
+				except:
+					pass
 			vospisuna += j
 		return vospisuna
 
@@ -183,12 +186,12 @@ class Imub(Udar):
 
 
 class Verbub(Udar):
-	def __init__(self, verb, mod="IND", vrm = "PRES", zan = "AFF", vop = "KEN"):
+	def __init__(self, verb):
 		self.verb = verb
-		self.mod = mod
-		self.vrm = vrm # Vreml akciyy
-		self.zan = zan # Zanath lokutory e akciy, AFF (afirmatiuga) il NEG (negatiuga)
-		self.vop = vop # Al prepozic voprosgusva ilei (KEN/EI)
+		# self.mod = mod
+		# self.vrm = vrm # Vreml akciyy
+		# self.zan = zan # Zanath lokutory e akciy, AFF (afirmatiuga) il NEG (negatiuga)
+		# self.vop = vop # Al prepozic voprosgusva ilei (KEN/EI)
 		self.koren_ind = [] # Koren indikatiugai mody
 		self.koren_imp = [] # Koren imperatiugai mody
 		self.koren_imppl = [] # Koren pluralathiy eidelunai vremliy
