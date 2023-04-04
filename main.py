@@ -27,5 +27,9 @@ def inttxt(txt):
 
 # iim =input("")
 p = inttxt(input(""))
+a = input("negative?")
+b = input("inter?")
+a = bool(len(a))
+b = bool(len(b))
 # a = input(str(Imub(iim, "SG").udarath_imy) +"\n" +str(Imub(iim, "PL").udarath_imy) +"\n" +str(Imub(iim, "PA").udarath_imy))
-print(Udvb(p, vrm="EID"))
+print(Udvb(p, vrm="FUT",zan=a,vop=b))

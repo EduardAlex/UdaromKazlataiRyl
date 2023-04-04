@@ -65,7 +65,11 @@ class Udar:
 
 	def vospis_slova(self, bk):
 		vospisuna = ""
+		skip = False
 		for i,j in enumerate(bk):
+			if skip:
+				skip = False
+				continue
 			if j in self.ppk or j in self.papk:
 				try:
 					if bk[i+1] in self.vokalub:
@@ -80,6 +84,21 @@ class Udar:
 				try:
 					if bk[i+1] in self.vokalub:
 						vospisuna += "v"
+						continue
+				except:
+					pass
+			elif j == "y":
+				try:
+					if bk[i+1] == "i":
+						vospisuna += "ï"
+						skip = True
+						continue
+				except:
+					pass
+			elif j == "y" and i != 0 and bk[i-1] in self.vokalub:
+				try:
+					if bk[i+1] not in self.vokalub:
+						vospisuna += "i"
 						continue
 				except:
 					pass
@@ -206,8 +225,13 @@ class Verbub(Udar):
 		self.koren_imppl = [] # Koren pluralathiy eidelunai vremliy
 		self.ip_izmenathiub = {}
 		self.ip_eidelunai = {}
+		self.dmwi = False
 		with open("vi", "r") as f: # List yb eidelunau infinitiugau
-			self.vi = f.read().split(" ")
+			self.vi = f.read()[:-1].split(" ")
+			print(self.vi)
+			if verb in self.vi:
+				self.dmwi = True
+				print("dmwi", str(self.dmwi))
 		self.naid_eidel()
 		super().__init__(verb)
 		self.naid_kornia_verby()
@@ -220,13 +244,13 @@ class Verbub(Udar):
 			del hdp[0:2]
 		elif self.verb.startswith("d"):
 			del hdp[0]
+		elif self.verb.startswith("ď"):
+			hdp[0] = "y"
 		# IMPERATIUGA
 		self.koren_imp = list(hdp)
 		# INDIKATIUGA
-		if hdp[-1] == "t":
-			if False: # !!!!!! STSI ABIT LISTE EIREGULATAU VERBYB !!!!!!
-				pass
-			elif hdp[-2] == "a":
+		if hdp[-1] == "t" and not self.dmwi:
+			if hdp[-2] == "a":
 				del hdp[-2:]
 			else:
 				del hdp[-1]
