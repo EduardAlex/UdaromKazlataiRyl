@@ -1,3 +1,9 @@
+
+class UdaratgaEror(Exception):
+	def __init__(self, mesaz):
+		self.mesaz = mesaz
+		super().__init__(self.mesaz)
+
 class Udar:
 	def __init__(self, faqer):
 		self.faqer = faqer
@@ -15,6 +21,8 @@ class Udar:
 		res = []
 		azuten = False
 		for i,j in enumerate(a):
+			if j == "'":
+				continue
 			if azuten:
 				azuten = False
 				continue
@@ -36,6 +44,10 @@ class Udar:
 				if a[i+1] == j:
 					res.append(2*j)
 					azuten = True
+				elif j == "t" and a[i+1] == "s" and i != len(a)-2:
+					if a[i+2] == "'":
+						res.append("ts'")
+						azuten = True
 				else:
 					res.append(j)
 			else:
