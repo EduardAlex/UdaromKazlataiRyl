@@ -117,6 +117,20 @@ class Udar:
 			vospisuna += j
 		return vospisuna
 
+class Unsusithiub(Udar):
+	def __init__(self, unsusith, num="SG"):
+		self.uns = unsusith
+		self.num = num
+		super().__init__(unsusith)
+		self.koncathiub = {"Nominatiŭgą" : ("ą", "ai"), "Akuzatiŭgą" : ("ą", "ai"), "Genitiŭgą" : ("ai", "aŭ"), "Datiŭgą" : ("ai", "aŭ"), "Uńialtgą" : ("as", "int"), "Alatiŭgą" : ("as", "iń"), "Ablatiŭgą" : ("as", "iń"), "Lokatiŭgą" : ("eŭ","eń")}
+		self.udar_unsusithia()
+
+	def __str__(self):
+		return str(self.udarath)
+
+	def udar_unsusithia(self):
+		self.udarath = {i : self.vospis_slova(self.bukvub_korniy[:-1] + self.uzan_bukvab_korniy(self.koncathiub[i][int(self.num == "PL")])) for i in self.koncathiub}
+
 class Imub(Udar):
 	def __init__(self, im, num="SG", pos=None):
 		self.im = im
